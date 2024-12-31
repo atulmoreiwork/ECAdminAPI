@@ -11,6 +11,7 @@ public interface ICategoryRepository
     Task<PagedResultDto<List<Categories>>> GetAllCategories(string CategoryId, int PageIndex = 0, int PageSize = 0);
     Task<Categories> GetCategoryById(int CategoryId);
     Task<int> AddUpdateCategory(Categories objModel);
+    Task<int> DeleteCategoryById(int CategoryId);
 }
 
 public class CategoryRepository : ICategoryRepository
@@ -108,5 +109,21 @@ public class CategoryRepository : ICategoryRepository
             CategoryId = await con.QuerySingleAsync<int>(query, param, commandType: CommandType.StoredProcedure);
         }
         return CategoryId;
+    }
+
+    public async Task<int> DeleteCategoryById(int CategoryId)
+    {
+        int _categoryId = 0;
+        using (var con = _context.CreateConnection)
+        {
+
+            string query = "p_AUD_Categories";
+            con.Open();
+            var param = new DynamicParameters();
+            param.Add("@CategoryId",CategoryId);
+            param.Add("@Flag", 3);
+            _categoryId = await con.QuerySingleAsync<int>(query, param, commandType: CommandType.StoredProcedure);
+        }
+        return _categoryId;
     }
 }

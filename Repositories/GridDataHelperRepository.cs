@@ -449,6 +449,7 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objColumnDetail.filter.FilterTo = string.Empty;
             lstColumnDetail.Add(objColumnDetail);
 
+
             //Description
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
@@ -485,6 +486,25 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objColumnDetail.filter.FilterTo = string.Empty;
             lstColumnDetail.Add(objColumnDetail);
 
+            //Category
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "categoryName";
+            objColumnDetail.DisplayName = "Type";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "categoryName";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+
             //UrlSlug
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
@@ -506,7 +526,7 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             //Price
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.IsDisplayOnGrid = true;
             objColumnDetail.Name = "price";
             objColumnDetail.DisplayName = "Price";
             objColumnDetail.Html = false;
@@ -524,7 +544,7 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             //StockQuantity
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.IsDisplayOnGrid = true;
             objColumnDetail.Name = "stockQuantity";
             objColumnDetail.DisplayName = "Quantity";
             objColumnDetail.Html = false;
@@ -542,7 +562,7 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             //Status
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.IsDisplayOnGrid = true;
             objColumnDetail.Name = "status";
             objColumnDetail.DisplayName = "Status";
             objColumnDetail.Html = false;
@@ -557,6 +577,23 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objColumnDetail.filter.FilterTo = string.Empty;
             lstColumnDetail.Add(objColumnDetail);
 
+            //Variant
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "productVariantCount";
+            objColumnDetail.DisplayName = "Variant";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "productVariantCount";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
           
             //Action
             objColumnDetail = new ColumnsDetails();
@@ -640,6 +677,15 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objFilterDetail.Type = "cs";
             lstFilterDetails.Add(objFilterDetail);
 
+            
+            //categoryName
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "categoryName";
+            objFilterDetail.Name = "categoryName";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
             //price
             objFilterDetail = new FilterDetails();
             objFilterDetail.ColId = "price";
@@ -665,7 +711,13 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objFilterDetail.Type = "cs";
             lstFilterDetails.Add(objFilterDetail);
 
-
+            //ProductVariantCount
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "productVariantCount";
+            objFilterDetail.Name = "productVariantCount";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
 
             //CategoryId
             objFilterDetail = new FilterDetails();

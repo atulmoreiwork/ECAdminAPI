@@ -111,4 +111,18 @@ public class CategoryController : ControllerBase
             return new APIResponse<int>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
         }
     }
+
+    [HttpGet("DeleteCategoryById")]
+    public async Task<APIResponse<int>> DeleteCategoryById(int CategoryId)
+    {
+        _logger.LogInfo("[CategoryController]|[DeleteCategoryById]|[Start] => DeleteCategoryById => CategoryId: " + CategoryId);
+        if (CategoryId <= 0)
+        {
+            ModelState.AddModelError("CategoryById", "Please enter CategoryById");
+            return new APIResponse<int>(HttpStatusCode.BadRequest,"Validation Error",ModelState.AllErrors(),true);
+        }
+        var result = await _categoryRepository.DeleteCategoryById(CategoryId);
+         string successMessage = "User deleted successfully";
+        return new APIResponse<int>(result, successMessage);
+    }
 }

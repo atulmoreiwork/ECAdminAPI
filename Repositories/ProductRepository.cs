@@ -9,8 +9,7 @@ public interface IProductRepository
     Task<PagedResultDto<List<Product>>> GetAllProducts(string ProductId, int PageIndex = 0, int PageSize = 0);
     Task<Product> GetProductById(int ProductId);
     Task<ProductVariant> GetProductVariantByProductId(int ProductVariantId);
-    Task<int> AddProduct(Product objProduct);
-    Task<int> UpdateProduct(Product objProduct);
+    Task<int> AddUpdateProduct(Product objProduct);
     Task<bool> DeleteProduct(int ProductId);
 }
 
@@ -80,7 +79,7 @@ public class ProductRepository : IProductRepository
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@ProductId", ProductId);
-            objProduct = await con.QueryFirstAsync<Product>("p_GET_Product", param, commandType: CommandType.StoredProcedure);
+            objProduct = await con.QueryFirstAsync<Product>("p_GET_Products", param, commandType: CommandType.StoredProcedure);
         }
         if (objProduct != null && objProduct.ProductId > 0)
         {
@@ -101,7 +100,7 @@ public class ProductRepository : IProductRepository
         }
         return objProductVariant;
     }
-    public async Task<int> AddProduct(Product objProduct)
+    public async Task<int> AddUpdateProduct(Product objProduct)
     {
         int productId = 0;
         using (var con = _context.CreateConnection)
@@ -120,79 +119,29 @@ public class ProductRepository : IProductRepository
                     param.Add("@Price", objProduct.Price);
                     param.Add("@StockQuantity", objProduct.StockQuantity);
                     if (!string.IsNullOrEmpty(objProduct.Status)) param.Add("@Status", objProduct.Status);
-                    param.Add("@Flag", 1);
+                    param.Add("@Flag", objProduct.Flag);
                     productId = await con.ExecuteScalarAsync<int>("p_AUD_Products", param, transaction: tran, commandType: CommandType.StoredProcedure, commandTimeout: 120);
-                    foreach (var variant in objProduct.ProductVariants)
+                    if(objProduct.Flag == 2){ productId = objProduct.ProductId;}
+                    if(productId > 0)
                     {
-                        param = new DynamicParameters();
-                        param.Add("@ProductId", productId);
-                        if (!string.IsNullOrEmpty(variant.Color)) param.Add("@Color", variant.Color);
-                        if (!string.IsNullOrEmpty(variant.Size)) param.Add("@Size", variant.Size);
-                        if (!string.IsNullOrEmpty(variant.Price)) param.Add("@Price", variant.Price);
-                        if (!string.IsNullOrEmpty(variant.StockQuantity)) param.Add("@StockQuantity", variant.StockQuantity);
-                        param.Add("@Flag", 1);
-                        var productVariantId = await con.ExecuteScalarAsync<int>("p_AUD_ProductVariant", param, transaction: tran, commandType: CommandType.StoredProcedure, commandTimeout: 120);
+                        foreach (var variant in objProduct.ProductVariants)
+                        {
+                            param = new DynamicParameters();
+                            param.Add("@ProductId", productId);
+                             if (variant.ProductVariantId > 0) param.Add("@ProductVariantId", variant.ProductVariantId);
+                            if (!string.IsNullOrEmpty(variant.Color)) param.Add("@Color", variant.Color);
+                            if (!string.IsNullOrEmpty(variant.Size)) param.Add("@Size", variant.Size);
+                            if (!string.IsNullOrEmpty(variant.Price)) param.Add("@Price", variant.Price);
+                            if (!string.IsNullOrEmpty(variant.StockQuantity)) param.Add("@StockQuantity", variant.StockQuantity);
+                            param.Add("@Flag", objProduct.Flag);
+                            var productVariantId = await con.ExecuteScalarAsync<int>("p_AUD_ProductVariant", param, transaction: tran, commandType: CommandType.StoredProcedure, commandTimeout: 120);
+                        }
                     }
                     tran.Commit();
                 }
                 catch (Exception ex)
                 {
-                    tran.Rollback();
-                    throw new Exception(ex.Message);
-                }
-            }
-        }
-        return productId;
-    }
-    public async Task<int> UpdateProduct(Product objProduct)
-    {
-        int productId = 0;
-        using (var con = _context.CreateConnection)
-        {
-            con.Open();
-            using (var tran = con.BeginTransaction())
-            {
-                try
-                {
-                    DynamicParameters param = new DynamicParameters();
-                    if (objProduct.ProductId > 0) param.Add("@ProductId", objProduct.ProductId);
-                    if (!string.IsNullOrEmpty(objProduct.ProductName)) param.Add("@ProductName", objProduct.ProductName);
-                    if (!string.IsNullOrEmpty(objProduct.UrlSlug)) param.Add("@UrlSlug", objProduct.UrlSlug);
-                    param.Add("@CategoryId", objProduct.CategoryId);
-                    if (!string.IsNullOrEmpty(objProduct.Description)) param.Add("@Description", objProduct.Description);
-                    param.Add("@Price", objProduct.Price);
-                    param.Add("@StockQuantity", objProduct.StockQuantity);
-                    if (!string.IsNullOrEmpty(objProduct.Status)) param.Add("@Status", objProduct.Status);
-                    param.Add("@Flag", 2);
-                    await con.ExecuteScalarAsync<int>("p_AUD_Products", param, transaction: tran, commandType: CommandType.StoredProcedure);
-                    foreach (var variant in objProduct.ProductVariants)
-                    {
-                        param = new DynamicParameters();
-                        //var _producVariant = GetProductVariantByProductId(variant.ProductVariantId).Result;
-                        DynamicParameters rparam = new DynamicParameters();
-                        rparam.Add("@ProductVariantId", variant.ProductVariantId);         
-                        var _producVariant = await con.QueryFirstOrDefaultAsync<ProductVariant>("p_GET_ProductVariantsById", rparam, transaction: tran, commandType: CommandType.StoredProcedure, commandTimeout: 120);
-                        if (_producVariant != null && _producVariant.ProductVariantId > 0)
-                        {
-                            param.Add("@Flag", 2);
-                        }
-                        else
-                        {
-                            _producVariant = new ProductVariant();
-                            param.Add("@Flag", 1);
-                        }
-                        param.Add("@ProductVariantId", _producVariant.ProductVariantId);
-                        param.Add("@ProductId", variant.ProductId);
-                        if (!string.IsNullOrEmpty(variant.Color)) param.Add("@Color", variant.Color);
-                        if (!string.IsNullOrEmpty(variant.Size)) param.Add("@Size", variant.Size);
-                        if (!string.IsNullOrEmpty(variant.Price)) param.Add("@Price", variant.Price);
-                        if (!string.IsNullOrEmpty(variant.StockQuantity)) param.Add("@StockQuantity", variant.StockQuantity);
-                        var productVariantId = await con.ExecuteScalarAsync<int>("p_AUD_ProductVariant", param, transaction: tran, commandType: CommandType.StoredProcedure);
-                    }
-                    tran.Commit();
-                }
-                catch (Exception ex)
-                {
+                    productId = 0;
                     tran.Rollback();
                     throw new Exception(ex.Message);
                 }

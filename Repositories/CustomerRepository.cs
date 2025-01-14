@@ -10,7 +10,7 @@ public interface ICustomerRepository
     Task<PagedResultDto<List<Customer>>> GetAllCustomers(string CustomerId, int PageIndex = 0, int PageSize = 0);
     Task<Customer> GetCustomerById(int CustomerId);
     Task<int> AddUpdateCustomer(Customer objCustomer);
-    Task<bool> DeleteCustomer(int CustomerId);
+    Task<int> DeleteCustomer(int CustomerId);
 }
 
 public class CustomerRepository : ICustomerRepository
@@ -67,7 +67,7 @@ public class CustomerRepository : ICustomerRepository
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@CustomerId", CustomerId);
-            objCustomer = await con.QueryFirstAsync<Customer>("p_GET_Customer", param, commandType: CommandType.StoredProcedure);
+            objCustomer = await con.QueryFirstAsync<Customer>("p_GET_Customers", param, commandType: CommandType.StoredProcedure);
         }
         return objCustomer;
     }
@@ -90,21 +90,20 @@ public class CustomerRepository : ICustomerRepository
             if (!string.IsNullOrEmpty(objCustomer.Email)) param.Add("@Email", objCustomer.Email);
             if (!string.IsNullOrEmpty(objCustomer.Password)) param.Add("@Password", objCustomer.Password);
             param.Add("@Flag", objCustomer.Flag);
-            result = await con.ExecuteScalarAsync<int>("p_AUD_Customers", param, commandType: CommandType.StoredProcedure);            
+            result = await con.ExecuteScalarAsync<int>("p_AUD_Customer", param, commandType: CommandType.StoredProcedure);            
         }
         return result;
     }
-    public async Task<bool> DeleteCustomer(int CustomerId)
+    public async Task<int> DeleteCustomer(int CustomerId)
     {
-        bool result = false;
+        int result = 0;
         using (var con = _context.CreateConnection)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@CustomerId", CustomerId);
             param.Add("@Status", "inactive");
             param.Add("@Flag", 3);
-            var _result = await con.ExecuteScalarAsync<int>("p_AUD_Customers", param, commandType: CommandType.StoredProcedure);
-            if(_result > 0){ result = true; }
+            result = await con.ExecuteScalarAsync<int>("p_AUD_Customer", param, commandType: CommandType.StoredProcedure);            
         }
         return result;
     }

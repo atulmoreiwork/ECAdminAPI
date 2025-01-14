@@ -12,6 +12,12 @@ public interface IGridDataHelperRepository
     List<FilterDetails> GetProductsFilterDetails();    
     List<ColumnsDetails> GetOrdersColumnDetails();
     List<FilterDetails> GetOrdersFilterDetails();
+    List<ColumnsDetails> GetDocumentsColumnDetails();
+    List<FilterDetails> GetDocumentsFilterDetails();
+    List<ColumnsDetails> GetUsersColumnDetails();
+    List<FilterDetails> GetUsersFilterDetails();
+    List<ColumnsDetails> GetRolesColumnDetails();
+    List<FilterDetails> GetRolesFilterDetails();
 }
 
 public class GridDataHelperRepository : IGridDataHelperRepository
@@ -778,23 +784,6 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objColumnDetail.filter.FilterTo = string.Empty;
             lstColumnDetail.Add(objColumnDetail);
 
-            //OrderName
-            objColumnDetail = new ColumnsDetails();
-            objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
-            objColumnDetail.Name = "orderName";
-            objColumnDetail.DisplayName = "OrderName";
-            objColumnDetail.Html = false;
-            objColumnDetail.HtmlName = string.Empty;
-            objColumnDetail.Type = "cs";
-            objColumnDetail.IsSorting = true;
-            objColumnDetail.filter.IsFiltering = true;
-            objColumnDetail.filter.FilterInputType = "input";
-            objColumnDetail.filter.FilterType = "cs";
-            objColumnDetail.filter.FilterName = "orderName";
-            objColumnDetail.filter.FilterFrom = string.Empty;
-            objColumnDetail.filter.FilterTo = string.Empty;
-            lstColumnDetail.Add(objColumnDetail);
 
             //CustomerId
             objColumnDetail = new ColumnsDetails();
@@ -814,12 +803,31 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objColumnDetail.filter.FilterTo = string.Empty;
             lstColumnDetail.Add(objColumnDetail);
 
+            //CustomerName
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "customerName";
+            objColumnDetail.DisplayName = "CustomerName";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "customerName";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+
             //TotalAmount
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.IsDisplayOnGrid = true;
             objColumnDetail.Name = "totalAmount";
-            objColumnDetail.DisplayName = "Total Amount";
+            objColumnDetail.DisplayName = "Total";
             objColumnDetail.Html = false;
             objColumnDetail.HtmlName = string.Empty;
             objColumnDetail.Type = "cs";
@@ -831,84 +839,12 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objColumnDetail.filter.FilterFrom = string.Empty;
             objColumnDetail.filter.FilterTo = string.Empty;
             lstColumnDetail.Add(objColumnDetail);
-
-            //DiscountAmount
-            objColumnDetail = new ColumnsDetails();
-            objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
-            objColumnDetail.Name = "discountAmount";
-            objColumnDetail.DisplayName = "Discount Amount";
-            objColumnDetail.Html = false;
-            objColumnDetail.HtmlName = string.Empty;
-            objColumnDetail.Type = "cs";
-            objColumnDetail.IsSorting = true;
-            objColumnDetail.filter.IsFiltering = true;
-            objColumnDetail.filter.FilterInputType = "input";
-            objColumnDetail.filter.FilterType = "cs";
-            objColumnDetail.filter.FilterName = "discountAmount";
-            objColumnDetail.filter.FilterFrom = string.Empty;
-            objColumnDetail.filter.FilterTo = string.Empty;
-            lstColumnDetail.Add(objColumnDetail);
-
-            //GrossAmount
-            objColumnDetail = new ColumnsDetails();
-            objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
-            objColumnDetail.Name = "grossAmount";
-            objColumnDetail.DisplayName = "Gross Amount";
-            objColumnDetail.Html = false;
-            objColumnDetail.HtmlName = string.Empty;
-            objColumnDetail.Type = "cs";
-            objColumnDetail.IsSorting = true;
-            objColumnDetail.filter.IsFiltering = true;
-            objColumnDetail.filter.FilterInputType = "input";
-            objColumnDetail.filter.FilterType = "cs";
-            objColumnDetail.filter.FilterName = "grossAmount";
-            objColumnDetail.filter.FilterFrom = string.Empty;
-            objColumnDetail.filter.FilterTo = string.Empty;
-            lstColumnDetail.Add(objColumnDetail);
-
-            //ShippingAmount
-            objColumnDetail = new ColumnsDetails();
-            objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
-            objColumnDetail.Name = "shippingAmount";
-            objColumnDetail.DisplayName = "Shipping Amount";
-            objColumnDetail.Html = false;
-            objColumnDetail.HtmlName = string.Empty;
-            objColumnDetail.Type = "cs";
-            objColumnDetail.IsSorting = true;
-            objColumnDetail.filter.IsFiltering = true;
-            objColumnDetail.filter.FilterInputType = "input";
-            objColumnDetail.filter.FilterType = "cs";
-            objColumnDetail.filter.FilterName = "shippingAmount";
-            objColumnDetail.filter.FilterFrom = string.Empty;
-            objColumnDetail.filter.FilterTo = string.Empty;
-            lstColumnDetail.Add(objColumnDetail);
-
-            //NetAmount
-            objColumnDetail = new ColumnsDetails();
-            objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
-            objColumnDetail.Name = "netAmount";
-            objColumnDetail.DisplayName = "Net Amount";
-            objColumnDetail.Html = false;
-            objColumnDetail.HtmlName = string.Empty;
-            objColumnDetail.Type = "cs";
-            objColumnDetail.IsSorting = true;
-            objColumnDetail.filter.IsFiltering = true;
-            objColumnDetail.filter.FilterInputType = "input";
-            objColumnDetail.filter.FilterType = "cs";
-            objColumnDetail.filter.FilterName = "netAmount";
-            objColumnDetail.filter.FilterFrom = string.Empty;
-            objColumnDetail.filter.FilterTo = string.Empty;
-            lstColumnDetail.Add(objColumnDetail);
-
+            
 
             //Status
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.IsDisplayOnGrid = true;
             objColumnDetail.Name = "status";
             objColumnDetail.DisplayName = "Status";
             objColumnDetail.Html = false;
@@ -926,7 +862,7 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             //PaymentStatus
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.IsDisplayOnGrid = true;
             objColumnDetail.Name = "paymentStatus";
             objColumnDetail.DisplayName = "Payment Status";
             objColumnDetail.Html = false;
@@ -944,9 +880,9 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             //PaymentType
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.IsDisplayOnGrid = true;
             objColumnDetail.Name = "paymentType";
-            objColumnDetail.DisplayName = "Payment Type";
+            objColumnDetail.DisplayName = "Payment Method";
             objColumnDetail.Html = false;
             objColumnDetail.HtmlName = string.Empty;
             objColumnDetail.Type = "cs";
@@ -955,24 +891,6 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objColumnDetail.filter.FilterInputType = "input";
             objColumnDetail.filter.FilterType = "cs";
             objColumnDetail.filter.FilterName = "paymentType";
-            objColumnDetail.filter.FilterFrom = string.Empty;
-            objColumnDetail.filter.FilterTo = string.Empty;
-            lstColumnDetail.Add(objColumnDetail);
-
-            //PaymentTransactionId
-            objColumnDetail = new ColumnsDetails();
-            objColumnDetail.filter = new FilterConfig();
-            objColumnDetail.IsDisplayOnGrid = false;
-            objColumnDetail.Name = "paymentTransactionId";
-            objColumnDetail.DisplayName = "Payment TransactionId";
-            objColumnDetail.Html = false;
-            objColumnDetail.HtmlName = string.Empty;
-            objColumnDetail.Type = "cs";
-            objColumnDetail.IsSorting = true;
-            objColumnDetail.filter.IsFiltering = true;
-            objColumnDetail.filter.FilterInputType = "input";
-            objColumnDetail.filter.FilterType = "cs";
-            objColumnDetail.filter.FilterName = "paymentTransactionId";
             objColumnDetail.filter.FilterFrom = string.Empty;
             objColumnDetail.filter.FilterTo = string.Empty;
             lstColumnDetail.Add(objColumnDetail);
@@ -1020,7 +938,6 @@ public class GridDataHelperRepository : IGridDataHelperRepository
         }
         return lstColumnDetail;
     }
-
     public List<FilterDetails> GetOrdersFilterDetails()
     {
         List<FilterDetails> lstFilterDetails = new List<FilterDetails>();
@@ -1044,10 +961,10 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objFilterDetail.Type = "cs";
             lstFilterDetails.Add(objFilterDetail);
 
-            //OrderName
+            //customerName
             objFilterDetail = new FilterDetails();
-            objFilterDetail.ColId = "orderName";
-            objFilterDetail.Name = "orderName";
+            objFilterDetail.ColId = "customerName";
+            objFilterDetail.Name = "customerName";
             objFilterDetail.Value = "";
             objFilterDetail.Type = "cs";
             lstFilterDetails.Add(objFilterDetail);
@@ -1068,39 +985,6 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objFilterDetail.Type = "cs";
             lstFilterDetails.Add(objFilterDetail);
 
-            //DiscountAmount
-            objFilterDetail = new FilterDetails();
-            objFilterDetail.ColId = "discountAmount";
-            objFilterDetail.Name = "discountAmount";
-            objFilterDetail.Value = "";
-            objFilterDetail.Type = "cs";
-            lstFilterDetails.Add(objFilterDetail);
-
-
-            //GrossAmount
-            objFilterDetail = new FilterDetails();
-            objFilterDetail.ColId = "grossAmount";
-            objFilterDetail.Name = "grossAmount";
-            objFilterDetail.Value = "";
-            objFilterDetail.Type = "cs";
-            lstFilterDetails.Add(objFilterDetail);
-
-            //ShippingAmount
-            objFilterDetail = new FilterDetails();
-            objFilterDetail.ColId = "shippingAmount";
-            objFilterDetail.Name = "shippingAmount";
-            objFilterDetail.Value = "";
-            objFilterDetail.Type = "cs";
-            lstFilterDetails.Add(objFilterDetail);
-
-            //NetAmount
-            objFilterDetail = new FilterDetails();
-            objFilterDetail.ColId = "netAmount";
-            objFilterDetail.Name = "netAmount";
-            objFilterDetail.Value = "";
-            objFilterDetail.Type = "cs";
-            lstFilterDetails.Add(objFilterDetail);
-
             //Ststus
             objFilterDetail = new FilterDetails();
             objFilterDetail.ColId = "status";
@@ -1108,6 +992,23 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objFilterDetail.Value = "";
             objFilterDetail.Type = "cs";
             lstFilterDetails.Add(objFilterDetail);
+
+            //paymentStatus
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "paymentStatus";
+            objFilterDetail.Name = "paymentStatus";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //paymentType
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "paymentType";
+            objFilterDetail.Name = "paymentType";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+            
 
             //OrderId
             objFilterDetail = new FilterDetails();
@@ -1121,6 +1022,571 @@ public class GridDataHelperRepository : IGridDataHelperRepository
         catch (Exception ex)
         {
             _logger.LogLocationWithException("GridDataHelperRepository->GetOrdersFilterDetails()->Error->", ex);
+        }
+        return lstFilterDetails;
+    }
+
+    public List<ColumnsDetails> GetDocumentsColumnDetails()
+    {
+        List<ColumnsDetails> lstColumnDetail = new List<ColumnsDetails>();
+        ColumnsDetails objColumnDetail;
+        try
+        {
+
+            //Sr. No.
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "row";
+            objColumnDetail.DisplayName = "Sr. No.";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "num";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "num";
+            objColumnDetail.filter.FilterName = "row";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //File Name
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "fileName";
+            objColumnDetail.DisplayName = "File Name";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "fileName";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //File Url
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "fileUrl";
+            objColumnDetail.DisplayName = "File Url";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "fileUrl";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //Document Type
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "documentType";
+            objColumnDetail.DisplayName = "Document Type";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "documentType";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //AssociatedId
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.Name = "associatedId";
+            objColumnDetail.DisplayName = "Associated Id";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "associatedId";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            
+            //AssociatedType
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.Name = "associatedType";
+            objColumnDetail.DisplayName = "Associated Type";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "associatedType";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+
+            //Action
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "action";
+            objColumnDetail.DisplayName = "Action";
+            objColumnDetail.Html = true;
+            objColumnDetail.HtmlName = "Action";
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = false;
+            objColumnDetail.filter.IsFiltering = false;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "action";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //DocumentId
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.Name = "documentId";
+            objColumnDetail.DisplayName = "Document Id";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "num";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "num";
+            objColumnDetail.filter.FilterName = "documentId";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogLocationWithException("GridDataHelperRepository->GetDocumentsColumnDetails()->Error->", ex);
+        }
+        return lstColumnDetail;
+    }
+    public List<FilterDetails> GetDocumentsFilterDetails()
+    {
+        List<FilterDetails> lstFilterDetails = new List<FilterDetails>();
+        FilterDetails objFilterDetail;
+        try
+        {
+
+            //Sr. No.
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "row";
+            objFilterDetail.Name = "row";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "num";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //File Name
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "fileName";
+            objFilterDetail.Name = "fileName";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //File Url
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "fileUrl";
+            objFilterDetail.Name = "fileUrl";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //DocumentType
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "documentType";
+            objFilterDetail.Name = "documentType";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //AssociatedType
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "associatedType";
+            objFilterDetail.Name = "associatedType";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+
+            //AssociatedId
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "associatedId";
+            objFilterDetail.Name = "associatedId";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "num";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //DocumentId
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "documentId";
+            objFilterDetail.Name = "documentId";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "num";
+            lstFilterDetails.Add(objFilterDetail);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogLocationWithException("GridDataHelperRepository->GetDocumentsFilterDetails()->Error->", ex);
+        }
+        return lstFilterDetails;
+    }
+
+    public List<ColumnsDetails> GetUsersColumnDetails()
+    {
+        List<ColumnsDetails> lstColumnDetail = new List<ColumnsDetails>();
+        ColumnsDetails objColumnDetail;
+        try
+        {
+
+            //Sr. No.
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "row";
+            objColumnDetail.DisplayName = "Sr. No.";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "num";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "num";
+            objColumnDetail.filter.FilterName = "row";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //User Name
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "userName";
+            objColumnDetail.DisplayName = "User Name";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "userName";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+
+            //Login Name
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "email";
+            objColumnDetail.DisplayName = "Email";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "email";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //Status
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "status";
+            objColumnDetail.DisplayName = "Status";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "status";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //Action
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "action";
+            objColumnDetail.DisplayName = "Action";
+            objColumnDetail.Html = true;
+            objColumnDetail.HtmlName = "Action";
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = false;
+            objColumnDetail.filter.IsFiltering = false;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "action";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //userId
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.Name = "userId";
+            objColumnDetail.DisplayName = "userId";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "num";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "num";
+            objColumnDetail.filter.FilterName = "userId";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogLocationWithException("GridDataHelperRepository->GetUsersColumnDetails()->Error->", ex);
+        }
+        return lstColumnDetail;
+    }
+    public List<FilterDetails> GetUsersFilterDetails()
+    {
+        List<FilterDetails> lstFilterDetails = new List<FilterDetails>();
+        FilterDetails objFilterDetail;
+        try
+        {
+
+            //Sr. No.
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "row";
+            objFilterDetail.Name = "row";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "num";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //User Name
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "userName";
+            objFilterDetail.Name = "userName";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //Email
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "email";
+            objFilterDetail.Name = "email";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //Status
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "status";
+            objFilterDetail.Name = "status";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+
+            //AdminUserId
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "userId";
+            objFilterDetail.Name = "userId";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "num";
+            lstFilterDetails.Add(objFilterDetail);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogLocationWithException("GridDataHelperRepository->GetUsersFilterDetails()->Error->", ex);
+        }
+        return lstFilterDetails;
+    }
+
+    public List<ColumnsDetails> GetRolesColumnDetails()
+    {
+        List<ColumnsDetails> lstColumnDetail = new List<ColumnsDetails>();
+        ColumnsDetails objColumnDetail;
+        try
+        {
+
+            //Sr. No.
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "row";
+            objColumnDetail.DisplayName = "Sr. No.";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "num";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "num";
+            objColumnDetail.filter.FilterName = "row";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //Role Name
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "roleName";
+            objColumnDetail.DisplayName = "Role Name";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "roleName";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+
+            //Description
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.Name = "roleDescription";
+            objColumnDetail.DisplayName = "Description";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "roleDescription";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+
+            //Action
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "action";
+            objColumnDetail.DisplayName = "Action";
+            objColumnDetail.Html = true;
+            objColumnDetail.HtmlName = "Action";
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = false;
+            objColumnDetail.filter.IsFiltering = false;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "action";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+            //roleId
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = false;
+            objColumnDetail.Name = "roleId";
+            objColumnDetail.DisplayName = "roleId";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "num";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "num";
+            objColumnDetail.filter.FilterName = "roleId";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogLocationWithException("GridDataHelperRepository->GetRolesColumnDetails()->Error->", ex);
+        }
+        return lstColumnDetail;
+    }
+    public List<FilterDetails> GetRolesFilterDetails()
+    {
+        List<FilterDetails> lstFilterDetails = new List<FilterDetails>();
+        FilterDetails objFilterDetail;
+        try
+        {
+
+            //Sr. No.
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "row";
+            objFilterDetail.Name = "row";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "num";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //Role Name
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "roleName";
+            objFilterDetail.Name = "roleName";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //RoleDescription
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "roleDescription";
+            objFilterDetail.Name = "roleDescription";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+
+            //RoleId
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "roleId";
+            objFilterDetail.Name = "roleId";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "num";
+            lstFilterDetails.Add(objFilterDetail);
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogLocationWithException("GridDataHelperRepository->GetRolesFilterDetails()->Error->", ex);
         }
         return lstFilterDetails;
     }

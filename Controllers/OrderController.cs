@@ -36,7 +36,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost("GetAllOrders")]
-    public async Task<APIResponse<List<Order>>> GetAllOrders([FromBody] GridFilter objFilter)
+    public async Task<APIResponse<PagedResultDto<List<Order>>>> GetAllOrders([FromBody] GridFilter objFilter)
     {
         try
         {
@@ -44,7 +44,7 @@ public class OrderController : ControllerBase
             if (objFilter == null)
             {
                 ModelState.AddModelError("GridFilter", "Grid Filter object are null");
-                return new APIResponse<List<Order>>(HttpStatusCode.BadRequest, "Grid filter object is null", ModelState.AllErrors(), true);
+                return new APIResponse<PagedResultDto<List<Order>>>(HttpStatusCode.BadRequest, "Grid filter object is null", ModelState.AllErrors(), true);
             }
             if (objFilter != null && objFilter.Filter != null && objFilter.Filter.Count > 0)
             {
@@ -52,12 +52,12 @@ public class OrderController : ControllerBase
                 if (_filter != null && !string.IsNullOrEmpty(_filter.Value)) { OrderId = _filter.Value; }
             }
             var lstOrders = await _orderRepository.GetAllOrders(OrderId, objFilter.PageNumber, objFilter.PageSize);
-            return new APIResponse<List<Order>>(lstOrders.Data, "Orders retrived successfully.");
+            return new APIResponse<PagedResultDto<List<Order>>>(lstOrders, "Order retrived successfully.");
         }
         catch (Exception ex)
         {
             _logger.LogLocationWithException("Order => GetAllOrders =>", ex);
-            return new APIResponse<List<Order>>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
+            return new APIResponse<PagedResultDto<List<Order>>>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
         }
     }
 
@@ -82,6 +82,7 @@ public class OrderController : ControllerBase
         }
     }
 
+    /*
     [HttpPost("AddUpdateOrder")]
     public async Task<APIResponse<int>> AddUpdateOrder([FromBody] Order objOrder)
     {
@@ -104,6 +105,5 @@ public class OrderController : ControllerBase
         }
     }
 
-
-
+    */
 }

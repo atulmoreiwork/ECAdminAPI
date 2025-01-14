@@ -51,8 +51,8 @@ public class CategoryController : ControllerBase
                 var _filter = objFilter.Filter.Find(x => x.ColId.ToLower() == "categoryid");
                 if (_filter != null && !string.IsNullOrEmpty(_filter.Value)) { CategoryId = _filter.Value; }
             }
-            var lstCustomer = await _categoryRepository.GetAllCategories(CategoryId, objFilter.PageNumber, objFilter.PageSize);
-            return new APIResponse<PagedResultDto<List<Categories>>>(lstCustomer, "Customers retrived successfully.");
+            var lstCategory = await _categoryRepository.GetAllCategories(CategoryId, objFilter.PageNumber, objFilter.PageSize);
+            return new APIResponse<PagedResultDto<List<Categories>>>(lstCategory, "Category retrived successfully.");
         }
         catch (Exception ex)
         {
@@ -122,7 +122,7 @@ public class CategoryController : ControllerBase
             return new APIResponse<int>(HttpStatusCode.BadRequest,"Validation Error",ModelState.AllErrors(),true);
         }
         var result = await _categoryRepository.DeleteCategoryById(CategoryId);
-         string successMessage = "User deleted successfully";
+         string successMessage = "Category deleted successfully";
         return new APIResponse<int>(result, successMessage);
     }
 }

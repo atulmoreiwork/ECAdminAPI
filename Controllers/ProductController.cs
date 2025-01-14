@@ -1,9 +1,11 @@
 using System.Net;
+using System.Text.Json;
 using ECAdminAPI.Models;
 using ECAdminAPI.Repositories;
 using ECAdminAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ECAdminAPI.Controllers;
 
@@ -13,10 +15,12 @@ public class ProductController : ControllerBase
 {
     private readonly ILoggerManager _logger;
     private readonly IProductRepository _productRepository;
-    public ProductController(ILoggerManager logger, IProductRepository productRepository)
+    private readonly IDocumentRepository _documentRepository;
+    public ProductController(ILoggerManager logger, IProductRepository productRepository, IDocumentRepository documentRepository)
     {
         _logger = logger;
         _productRepository = productRepository;
+        _documentRepository = documentRepository;
     }
 
     [HttpGet("GetProducts")]
@@ -82,42 +86,64 @@ public class ProductController : ControllerBase
         }
     }
 
-    [HttpPost("AddProduct")]
-    public async Task<APIResponse<int>> AddProduct([FromBody] Product objProduct)
+    [HttpPost("AddUpdateProduct")]
+    public async Task<APIResponse<int>> AddUpdateProduct()
     {
-        int result = 0;
         try
         {
+            Product objModel = new Product();
+            var form = await Request.ReadFormAsync();
+            var files = form.Files;
+            if (files != null || files.Count > 0)
+            {
+                var supportedTypes = new[] { "pdf","jpg","jpeg", "png" };
+                 foreach (var file in files){
+                    var fileExt = Path.GetExtension(file.FileName).Substring(1).ToLower();
+                    if (!supportedTypes.Contains(fileExt))
+                    {
+                        ModelState.AddModelError("ImportFile", $"File '{file.FileName}' has an unsupported file type.");
+                    }
+                 }
+            }
             if (!ModelState.IsValid)
             {
                 return new APIResponse<int>(HttpStatusCode.BadRequest, "Validation Error", ModelState.AllErrors(), true);
             }
-            result = await _productRepository.AddProduct(objProduct);
+            objModel.ProductId = Convert.ToInt32(Request.Form["ProductId"]);
+            objModel.ProductName = Convert.ToString(Request.Form["ProductName"]);
+            objModel.CategoryId = Convert.ToInt32(Request.Form["CategoryId"]);
+            objModel.Description = Convert.ToString(Request.Form["Description"]);
+            objModel.Price = Convert.ToDouble(Request.Form["Price"]);            
+            objModel.Status = Convert.ToString(Request.Form["Status"]);
+            objModel.ProductVariants = new List<ProductVariant>();
+            var productVariantsJson = Request.Form["ProductVariants"];
+            objModel.ProductVariants = JsonConvert.DeserializeObject<List<ProductVariant>>(productVariantsJson);
+            objModel.StockQuantity = 0;
+            if(objModel.ProductId > 0){ objModel.Flag = 2;} else { objModel.Flag = 1;}
+            foreach (var variant in objModel.ProductVariants)
+            {
+                objModel.StockQuantity = objModel.StockQuantity + Convert.ToInt32(variant.StockQuantity);
+            }
+            var result = await _productRepository.AddUpdateProduct(objModel);
+            if(result > 0 && (files != null || files.Count > 0))
+            {
+               objModel.ImportFile = form.Files.ToArray();
+               await _documentRepository.AddProductDocumentWithFile(result, objModel.ImportFile);
+            }
+            var documentJson = Request.Form["Documents"];
+            objModel.Documents = JsonConvert.DeserializeObject<List<Document>>(documentJson);
+            for(int i = 0; i < objModel.Documents.Count; i++)
+            {
+                if(objModel.Documents[i].IsDeleted == true)
+                {
+                    await _documentRepository.DeleteDocumentById(objModel.Documents[i].DocumentId);
+                }                
+            }
             return new APIResponse<int>(result, "Product created successfully.");
         }
         catch (Exception ex)
         {
             _logger.LogLocationWithException("Product => AddProduct =>", ex);
-            return new APIResponse<int>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
-        }
-    }
-
-    [HttpPost("UpdateProduct")]
-    public async Task<APIResponse<int>> UpdateProduct([FromBody] Product objProduct)
-    {
-        int result = 0;
-        try
-        {
-            if (!ModelState.IsValid)
-            {
-                return new APIResponse<int>(HttpStatusCode.BadRequest, "Validation Error", ModelState.AllErrors(), true);
-            }
-            result = await _productRepository.UpdateProduct(objProduct);
-            return new APIResponse<int>(result, "Product updated successfully.");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogLocationWithException("Product => UpdateProduct =>", ex);
             return new APIResponse<int>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
         }
     }

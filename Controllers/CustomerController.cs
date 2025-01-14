@@ -42,7 +42,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost("GetAllCustomers")]
-    public async Task<APIResponse<List<Customer>>> GetAllCustomers([FromBody] GridFilter objFilter)
+    public async Task<APIResponse<PagedResultDto<List<Customer>>>> GetAllCustomers([FromBody] GridFilter objFilter)
     {
         try
         {
@@ -50,7 +50,7 @@ public class CustomerController : ControllerBase
             if (objFilter == null)
             {
                 ModelState.AddModelError("GridFilter", "Grid Filter object are null");
-                return new APIResponse<List<Customer>>(HttpStatusCode.BadRequest, "Grid filter object is null", ModelState.AllErrors(), true);
+                return new APIResponse<PagedResultDto<List<Customer>>>(HttpStatusCode.BadRequest, "Grid filter object is null", ModelState.AllErrors(), true);
             }
             if (objFilter != null && objFilter.Filter != null && objFilter.Filter.Count > 0)
             {
@@ -58,12 +58,12 @@ public class CustomerController : ControllerBase
                 if (_filter != null && !string.IsNullOrEmpty(_filter.Value)) { CustomerId = _filter.Value; }
             }
             var lstCustomer = await _customerRepository.GetAllCustomers(CustomerId, objFilter.PageNumber, objFilter.PageSize);
-            return new APIResponse<List<Customer>>(lstCustomer.Data, "Customers retrived successfully.");
+            return new APIResponse<PagedResultDto<List<Customer>>>(lstCustomer, "Customers retrived successfully.");
         }
         catch (Exception ex)
         {
             _logger.LogLocationWithException("Customer => GetAllCustomers =>", ex);
-            return new APIResponse<List<Customer>>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
+            return new APIResponse<PagedResultDto<List<Customer>>>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
         }
     }
 
@@ -108,5 +108,19 @@ public class CustomerController : ControllerBase
             _logger.LogLocationWithException("Customer => AddCustomer =>", ex);
             return new APIResponse<int>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
         }
+    }
+       
+    [HttpGet("DeleteCustomerById")]
+    public async Task<APIResponse<int>> DeleteCustomerById(int CustomerId)
+    {
+        _logger.LogInfo("[CustomerController]|[DeleteCustomerById]|[Start] => DeleteCustomerById => CustomerId: " + CustomerId);
+        if (CustomerId <= 0)
+        {
+            ModelState.AddModelError("CustomerId", "Please enter CustomerId");
+            return new APIResponse<int>(HttpStatusCode.BadRequest,"Validation Error",ModelState.AllErrors(),true);
+        }
+        var result = await _customerRepository.DeleteCustomer(CustomerId);
+         string successMessage = "Customer deleted successfully";
+        return new APIResponse<int>(result, successMessage);
     }
 }

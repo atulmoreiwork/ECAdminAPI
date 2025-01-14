@@ -110,7 +110,6 @@ public class CategoryRepository : ICategoryRepository
         }
         return CategoryId;
     }
-
     public async Task<int> DeleteCategoryById(int CategoryId)
     {
         int _categoryId = 0;

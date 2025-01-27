@@ -1480,7 +1480,23 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objColumnDetail.filter.FilterTo = string.Empty;
             lstColumnDetail.Add(objColumnDetail);
 
-
+            //UserCount
+            objColumnDetail = new ColumnsDetails();
+            objColumnDetail.filter = new FilterConfig();
+            objColumnDetail.IsDisplayOnGrid = true;
+            objColumnDetail.Name = "userCount";
+            objColumnDetail.DisplayName = "User Count";
+            objColumnDetail.Html = false;
+            objColumnDetail.HtmlName = string.Empty;
+            objColumnDetail.Type = "cs";
+            objColumnDetail.IsSorting = true;
+            objColumnDetail.filter.IsFiltering = true;
+            objColumnDetail.filter.FilterInputType = "input";
+            objColumnDetail.filter.FilterType = "cs";
+            objColumnDetail.filter.FilterName = "userCount";
+            objColumnDetail.filter.FilterFrom = string.Empty;
+            objColumnDetail.filter.FilterTo = string.Empty;
+            lstColumnDetail.Add(objColumnDetail);
             //Description
             objColumnDetail = new ColumnsDetails();
             objColumnDetail.filter = new FilterConfig();
@@ -1562,6 +1578,14 @@ public class GridDataHelperRepository : IGridDataHelperRepository
             objFilterDetail = new FilterDetails();
             objFilterDetail.ColId = "roleName";
             objFilterDetail.Name = "roleName";
+            objFilterDetail.Value = "";
+            objFilterDetail.Type = "cs";
+            lstFilterDetails.Add(objFilterDetail);
+
+            //User Count
+            objFilterDetail = new FilterDetails();
+            objFilterDetail.ColId = "userCount";
+            objFilterDetail.Name = "userCount";
             objFilterDetail.Value = "";
             objFilterDetail.Type = "cs";
             lstFilterDetails.Add(objFilterDetail);

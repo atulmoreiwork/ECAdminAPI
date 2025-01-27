@@ -23,6 +23,7 @@ public class User
     [Required(ErrorMessage = "Please enter name")]
     public string FirstName { get;set;}
     public string LastName { get;set;}
+    public string UserName { get;set;}
 
     [Required(ErrorMessage = "Please enter email")]
     [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",ErrorMessage = "Email is invalid")]

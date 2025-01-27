@@ -53,8 +53,8 @@ public class RoleController : ControllerBase
                 var _filter = objFilter.Filter.Find(x => x.ColId.ToLower() == "roleid");
                 if (_filter != null && !string.IsNullOrEmpty(_filter.Value)) { RoleId = _filter.Value; }
             }
-            var lstUser = await _roleRepository.GetAllRoles(RoleId, objFilter.PageNumber, objFilter.PageSize);
-            return new APIResponse<PagedResultDto<List<Role>>>(lstUser, "Roles retrived successfully.");
+            var lstRole = await _roleRepository.GetAllRoles(RoleId, objFilter.PageNumber, objFilter.PageSize);
+            return new APIResponse<PagedResultDto<List<Role>>>(lstRole, "Roles retrived successfully.");
         }
         catch (Exception ex)
         {

@@ -10,7 +10,7 @@ public interface IProductRepository
     Task<Product> GetProductById(int ProductId);
     Task<ProductVariant> GetProductVariantByProductId(int ProductVariantId);
     Task<int> AddUpdateProduct(Product objProduct);
-    Task<bool> DeleteProduct(int ProductId);
+    Task<int> DeleteProductById(int ProductId);
 }
 
 public class ProductRepository : IProductRepository
@@ -149,17 +149,17 @@ public class ProductRepository : IProductRepository
         }
         return productId;
     }
-    public async Task<bool> DeleteProduct(int ProductId)
+    public async Task<int> DeleteProductById(int ProductId)
     {
-        bool result = false;
+        int result = 0;
         using (var con = _context.CreateConnection)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@ProductId", ProductId);
-            param.Add("@Status", "inactive");
+            //param.Add("@Status", "inactive");
             param.Add("@Flag", 3);
             var _result = await con.ExecuteScalarAsync<int>("p_AUD_Products", param, commandType: CommandType.StoredProcedure);
-            if (_result > 0) { result = true; }
+            if (_result > 0) { result = 1; }
         }
         return result;
     }

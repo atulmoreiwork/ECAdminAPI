@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\net6.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/436b6529-f565-4c18-b9ab-260c07b8ed99/resourceGroups/VAM/providers/Microsoft.Web/sites/ECAdminAPI"
+}

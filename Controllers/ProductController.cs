@@ -147,4 +147,18 @@ public class ProductController : ControllerBase
             return new APIResponse<int>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
         }
     }
+
+    [HttpGet("DeleteProductById")]
+    public async Task<APIResponse<int>> DeleteProductById(int ProductId)
+    {
+        _logger.LogInfo("[CategoryController]|[DeleteProductById]|[Start] => DeleteProductById => ProductId: " + ProductId);
+        if (ProductId <= 0)
+        {
+            ModelState.AddModelError("ProductId", "Please enter ProductId");
+            return new APIResponse<int>(HttpStatusCode.BadRequest,"Validation Error",ModelState.AllErrors(),true);
+        }
+        var result = await _productRepository.DeleteProductById(ProductId);
+         string successMessage = "Product deleted successfully";
+        return new APIResponse<int>(result, successMessage);
+    }
 }

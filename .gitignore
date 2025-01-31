@@ -61,3 +61,9 @@ obj/Debug/net6.0/ECAdminAPI.pdb
 obj/Debug/net6.0/ref/ECAdminAPI.dll
 obj/Debug/net6.0/refint/ECAdminAPI.dll
 .config/dotnet-tools.json
+bin/release/net6.0/ECAdminAPI.pdb
+bin/release/net6.0/publish/ECAdminAPI.dll
+bin/release/net6.0/publish/ECAdminAPI.pdb
+obj/Release/net6.0/ECAdminAPI.dll
+obj/Release/net6.0/ECAdminAPI.pdb
+bin/release/net6.0/ECAdminAPI.dll

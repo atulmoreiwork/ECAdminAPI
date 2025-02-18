@@ -86,6 +86,27 @@ public class ProductController : ControllerBase
         }
     }
 
+    [HttpGet("GetProductByCategoryId")]
+    public async Task<APIResponse<List<Product>>> GetProductByCategoryId(int CategoryId)
+    {
+        List<Product> lstProduct = new List<Product>();
+        try
+        {
+            if (CategoryId == 0)
+            {
+                ModelState.AddModelError("CategoryId", "Please provide categoryId");
+                return new APIResponse<List<Product>>(HttpStatusCode.BadRequest, "Validation Error", ModelState.AllErrors(), true);
+            }
+            lstProduct = await _productRepository.GetProductByCategoryId(CategoryId);
+            return new APIResponse<List<Product>>(lstProduct, "Products retrived successfully.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogLocationWithException("Product => GetProductByCategoryId =>", ex);
+            return new APIResponse<List<Product>>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
+        }
+    }
+
     [HttpPost("AddUpdateProduct")]
     public async Task<APIResponse<int>> AddUpdateProduct()
     {

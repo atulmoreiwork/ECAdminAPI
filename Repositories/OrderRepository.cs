@@ -10,7 +10,7 @@ public interface IOrderRepository
     Task<PagedResultDto<List<Order>>> GetAllOrders(string OrderId, int PageIndex = 0, int PageSize = 0);
     Task<Order> GetOrderById(int OrderId);
     Task<List<OrderItem>> GetOrderItemsByOrderId(int OrderId);
-    //Task<int> AddUpdateOrder(Order objModel);
+    Task<int> AddUpdateOrder(Order objModel);
     //Task<Order> CreateOrder(OrderDTO objOrder);
 }
 
@@ -111,32 +111,66 @@ public class OrderRepository : IOrderRepository
         }
         return lstOrderItems;
     }
-    // public async Task<int> AddUpdateOrder(Order objOrderModel)
-    // {
-    //     int result = 0;
-    //     using (var con = _context.CreateConnection)
-    //     {
-    //         DynamicParameters param = new DynamicParameters();
-    //         if (objOrderModel.OrderId > 0) param.Add("@OrderId", objOrderModel.OrderId);
-    //         if (objOrderModel.CustomerId > 0) param.Add("@CustomerId", objOrderModel.CustomerId);
+    public async Task<int> AddUpdateOrder(Order objOrderModel)
+    {
+        int result = 0;
 
-    //         if (!string.IsNullOrEmpty(objOrderModel.OrderNumber)) param.Add("@OrderNumber", objOrderModel.OrderNumber);
-    //         if (!string.IsNullOrEmpty(objOrderModel.OrderName)) param.Add("@OrderName", objOrderModel.OrderName);
-    //         if (!string.IsNullOrEmpty(objOrderModel.Status.ToString())) param.Add("@Status", objOrderModel.Status);
-    //         param.Add("@TotalAmount", objOrderModel.TotalAmount);
-    //         param.Add("@DiscountAmount", objOrderModel.DiscountAmount);
-    //         param.Add("@GrossAmount", objOrderModel.GrossAmount);
-    //         param.Add("@ShippingAmount", objOrderModel.ShippingAmount);
-    //         param.Add("@NetAmount", objOrderModel.NetAmount);
-    //         if (!string.IsNullOrEmpty(objOrderModel.Status.ToString())) param.Add("@Status", objOrderModel.Status);
-    //         if (!string.IsNullOrEmpty(objOrderModel.PaymentStatus.ToString())) param.Add("@PaymentStatus", objOrderModel.PaymentStatus);
-    //         if (!string.IsNullOrEmpty(objOrderModel.PaymentType.ToString())) param.Add("@PaymentType", objOrderModel.PaymentType);
-    //         if (!string.IsNullOrEmpty(objOrderModel.PaymentTransactionId)) param.Add("@PaymentTransactionId", objOrderModel.PaymentTransactionId);
-    //         param.Add("@Flag", objOrderModel.Flag);
-    //         result = await con.ExecuteScalarAsync<int>("p_AUD_Orders", param, commandType: CommandType.StoredProcedure);
-    //     }
-    //     return result;
-    // }
+        using (var con = _context.CreateConnection)
+        {
+            con.Open();
+            using (var tran = con.BeginTransaction())
+            {
+                try
+                {
+                    DynamicParameters param = new DynamicParameters();
+                    if (objOrderModel.OrderId > 0) param.Add("@OrderId", objOrderModel.OrderId);
+                    if (objOrderModel.CustomerId > 0) param.Add("@CustomerId", objOrderModel.CustomerId);
+                    param.Add("@TotalAmount", objOrderModel.TotalAmount);
+                    param.Add("@DiscountAmount", objOrderModel.DiscountAmount);
+                    param.Add("@GrossAmount", objOrderModel.GrossAmount);
+                    param.Add("@ShippingAmount", objOrderModel.ShippingAmount);
+                    param.Add("@NetAmount", objOrderModel.NetAmount);
+                    if (!string.IsNullOrEmpty(objOrderModel.Status.ToString())) param.Add("@Status", objOrderModel.Status);
+                    if (!string.IsNullOrEmpty(objOrderModel.PaymentStatus.ToString())) param.Add("@PaymentStatus", objOrderModel.PaymentStatus);
+                    if (!string.IsNullOrEmpty(objOrderModel.PaymentType.ToString())) param.Add("@PaymentType", objOrderModel.PaymentType);
+                    if (!string.IsNullOrEmpty(objOrderModel.PaymentTransactionId)) param.Add("@PaymentTransactionId", objOrderModel.PaymentTransactionId);
+                    param.Add("@Flag", objOrderModel.Flag);
+                    objOrderModel.OrderId = await con.ExecuteScalarAsync<int>("p_AUD_Order", param, transaction: tran, commandType: CommandType.StoredProcedure);
+                    foreach (var variant in objOrderModel.OrderItems)
+                    {
+                        param = new DynamicParameters();
+                        param.Add("@OrderId", objOrderModel.OrderId);
+                        param.Add("@ProductId", variant.ProductId);
+                        param.Add("@ProductVariantId", variant.ProductVariantId);
+                        if (!string.IsNullOrEmpty(variant.ProductName)) param.Add("@ProductName", variant.ProductName);
+                        if (!string.IsNullOrEmpty(variant.Color)) param.Add("@Color", variant.Color);
+                        if (!string.IsNullOrEmpty(variant.Size)) param.Add("@Size", variant.Size);
+                        param.Add("@Price", variant.Price);
+                        param.Add("@Quantity", variant.Quantity);
+                        param.Add("@TotalAmount", variant.TotalAmount);
+                        param.Add("@Flag", 1);
+                        var productVariantId = await con.ExecuteScalarAsync<int>("p_AUD_OrderItems", param, transaction: tran, commandType: CommandType.StoredProcedure, commandTimeout: 120);
+                    }
+                    var orderShippingAddress = new OrderShippingAddress{
+                        OrderShippingAddressId = objOrderModel.OrderShippingAddress.OrderShippingAddressId,
+                        OrderId = objOrderModel.OrderId,
+                        FullAddress = objOrderModel.OrderShippingAddress.FullAddress,
+                        State = objOrderModel.OrderShippingAddress.State,
+                        City = objOrderModel.OrderShippingAddress.City,
+                        ZipCode = objOrderModel.OrderShippingAddress.ZipCode
+                    };                           
+                    objOrderModel.OrderShippingAddress.OrderShippingAddressId = _orderShippingAddressRepository.AddUpdateShippingAddress(orderShippingAddress).Result;
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
+        return result;
+    }
     // public async Task<Order> CreateOrder(OrderDTO objOrder)
     // {
     //     // Validate the order inputs
@@ -204,7 +238,7 @@ public class OrderRepository : IOrderRepository
     //                 if (!string.IsNullOrEmpty(objOrderModel.PaymentType.ToString())) param.Add("@PaymentType", objOrderModel.PaymentType);
     //                 if (!string.IsNullOrEmpty(objOrderModel.PaymentTransactionId)) param.Add("@PaymentTransactionId", objOrderModel.PaymentTransactionId);
     //                 param.Add("@Flag", 1);
-    //                 objOrderModel.OrderId = await con.ExecuteScalarAsync<int>("p_AUD_Orders", param, transaction: tran, commandType: CommandType.StoredProcedure);
+    //                 objOrderModel.OrderId = await con.ExecuteScalarAsync<int>("p_AUD_Order", param, transaction: tran, commandType: CommandType.StoredProcedure);
     //                 foreach (var variant in objOrderModel.OrderItems)
     //                 {
     //                     param = new DynamicParameters();

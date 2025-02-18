@@ -26,14 +26,14 @@ public class Order
     public int OrderId { get; set; } // Primary Key
     public string OrderNumber { get; set; } // Unique Order Number  
     public int CustomerId { get; set; } // Foreign Key - User
-     public int OrderShippingAddressId { get; set; } // Foreign Key - User
-    public string CustomerName { get; set; }    
+    public int CategoryId { get; set; } 
+    public int ShippingAddressId { get; set; }     
     public double TotalAmount { get; set; } = 1500f;
     public double DiscountAmount { get; set; } = 100f;
     public double GrossAmount { get; set; } = 1400f;
     public double ShippingAmount { get; set; } = 50f;
     public double NetAmount { get; set; } = 1450f;
-    public string Status { get; set; } // Enum - placed / processing / shipping / delivered
+    public string Status { get; set; } // Enum - Placed / Packed / Shipped / Delivered
     public string PaymentStatus { get; set; }
     public string PaymentType { get; set; } 
     public string PaymentTransactionId { get; set; } 

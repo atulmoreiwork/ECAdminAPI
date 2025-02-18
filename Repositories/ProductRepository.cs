@@ -11,6 +11,7 @@ public interface IProductRepository
     Task<ProductVariant> GetProductVariantByProductId(int ProductVariantId);
     Task<int> AddUpdateProduct(Product objProduct);
     Task<int> DeleteProductById(int ProductId);
+    Task<List<Product>> GetProductByCategoryId(int CategoryId);
 }
 
 public class ProductRepository : IProductRepository
@@ -162,5 +163,26 @@ public class ProductRepository : IProductRepository
             if (_result > 0) { result = 1; }
         }
         return result;
+    }
+
+    public async Task<List<Product>> GetProductByCategoryId(int CategoryId)
+    {
+        List<Product> lstProducts = new List<Product>();
+        using (var con = _context.CreateConnection)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@CategoryId", CategoryId);
+            var result = await con.QueryAsync<Product>("p_GET_Products", param, commandType: CommandType.StoredProcedure);
+            lstProducts = result.ToList();
+        }
+        if (lstProducts != null && lstProducts.Count > 0)
+        {
+            for(int i=0; i<lstProducts.Count; i++)
+            {
+                lstProducts[i].ProductVariants = new List<ProductVariant>();
+                lstProducts[i].ProductVariants = GetProductVariants(lstProducts[i].ProductId).Result;
+            }    
+        }
+        return lstProducts;
     }
 }

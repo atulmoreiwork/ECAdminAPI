@@ -82,7 +82,7 @@ public class OrderController : ControllerBase
         }
     }
 
-    /*
+
     [HttpPost("AddUpdateOrder")]
     public async Task<APIResponse<int>> AddUpdateOrder([FromBody] Order objOrder)
     {
@@ -103,7 +103,5 @@ public class OrderController : ControllerBase
             _logger.LogLocationWithException("Order => AddUpdateOrder =>", ex);
             return new APIResponse<int>(HttpStatusCode.InternalServerError, "Internal server error: " + ex.Message);
         }
-    }
-
-    */
+    }  
 }
